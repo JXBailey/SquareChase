@@ -79,7 +79,29 @@ namespace SquareChase
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            if(timeRemaining == 0.0f)
+            {
+                currentSquare = new Rectangle(
+                    rand.Next(0, this.Window.ClientBounds.Width-32),
+                    rand.Next(0, this.Window.ClientBounds.Height-32),
+                    32,32
+                    );
+
+                timeRemaining = TIME_PER_SQUARE;
+            }
+
+            MouseState mouse = Mouse.GetState();
+            if(
+                (mouse.LeftButton == ButtonState.Pressed) &&
+                currentSquare.Contains(mouse.X, mouse.Y)
+                )
+            {
+                playerScore++;
+                timeRemaining = 0.0f;
+            }
+
+            timeRemaining = MathHelper.Max(0, timeRemaining - (float)gameTime.ElapsedGameTime.TotalSeconds);
+            this.Window.Title = "Score : " + playerScore.ToString();
 
             base.Update(gameTime);
         }
@@ -93,7 +115,7 @@ namespace SquareChase
             GraphicsDevice.Clear(Color.DarkRed);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(squareTexture, new Rectangle(100, 100, 200, 200), colors[0]);
+            spriteBatch.Draw(squareTexture, currentSquare, colors[playerScore%3]);
             spriteBatch.End();
 
             // TODO: Add your drawing code here
