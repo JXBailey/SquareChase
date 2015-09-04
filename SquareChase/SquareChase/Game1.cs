@@ -18,6 +18,14 @@ namespace SquareChase
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        // add game specific variables
+        Random      rand = new Random();
+        Texture2D   squareTexture;
+        Rectangle   currentSquare;
+        int         playerScore = 0;
+        float       timeRemaining = 0.0f;
+        const float TIME_PER_SQUARE = 0.75f;
+        Color[]     colors = new Color[3] {Color.Indigo, Color.Orchid, Color.Silver};
 
         public Game1()
         {
@@ -34,7 +42,7 @@ namespace SquareChase
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            this.IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -48,6 +56,7 @@ namespace SquareChase
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            squareTexture = Content.Load<Texture2D>(@"square");
         }
 
         /// <summary>
@@ -82,6 +91,10 @@ namespace SquareChase
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkRed);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(squareTexture, new Rectangle(100, 100, 200, 200), colors[0]);
+            spriteBatch.End();
 
             // TODO: Add your drawing code here
 
